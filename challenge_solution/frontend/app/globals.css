@@ -1,0 +1,78 @@
+:root {
+  --bg: #0a1222;
+  --card: #0f1b33;
+  --line: #223455;
+  --ink: #e6efff;
+  --muted: #9db0cf;
+  --accent: #2f6df6;
+  --accent-2: #1f4ccf;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Manrope", "Segoe UI", sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 0% 0%, #142341 0, var(--bg) 45%),
+    radial-gradient(circle at 100% 100%, #0f1b33 0, var(--bg) 45%);
+}
+
+.page { max-width: 1180px; margin: 0 auto; padding: 20px; display: grid; gap: 12px; }
+.card {
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 14px;
+  box-shadow: 0 10px 24px #00000055;
+}
+.top { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+.top h1 { margin: 0; }
+.top p { margin: 4px 0 0; color: var(--muted); }
+.pill {
+  background: #102447;
+  border: 1px solid #2f4f86;
+  color: #cfe1ff;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-size: 13px;
+}
+
+.controls { display: grid; grid-template-columns: 1fr 220px 180px; gap: 8px; }
+.controls input, .controls select, .controls button {
+  height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--line);
+  padding: 0 10px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.controls input, .controls select {
+  background: #0c172d;
+}
+.controls button {
+  border: none;
+  color: #fff;
+  font-weight: 700;
+  background: linear-gradient(120deg, var(--accent), var(--accent-2));
+}
+
+table { width: 100%; border-collapse: collapse; font-size: 13px; }
+th, td { border-bottom: 1px solid #1d2d4a; text-align: left; padding: 8px; }
+th { color: var(--muted); font-size: 12px; text-transform: uppercase; }
+.error { color: #ff8a8a; margin: 0; }
+.totals { margin-top: 14px; display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.totals p {
+  margin: 0;
+  padding: 10px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  background: #0c172d;
+}
+
+@media (max-width: 980px) {
+  .controls { grid-template-columns: 1fr; }
+  .top { align-items: flex-start; flex-direction: column; }
+  .totals { grid-template-columns: 1fr; }
+}
