@@ -1,9 +1,0 @@
-__pycache__/
-*.pyc
-*.pyo
-*.pyd
-.pytest_cache/
-.venv/
-.git/
-challenge_solution/frontend/node_modules/
-challenge_solution/frontend/.next/
