@@ -18,7 +18,6 @@ type Quote = {
   items: QuoteItem[];
 };
 
-const apiBase = process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
 const fmtARS = (n: number) => new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(n);
 const fmtUSD = (n: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(n);
 const todayISO = new Date().toISOString().slice(0, 10);
@@ -33,7 +32,7 @@ export default function Page() {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    fetch(`${apiBase}/api/recipes`)
+    fetch("/api/recipes")
       .then((r) => r.json())
       .then((d) => {
         const list = d.recipes ?? [];
@@ -49,7 +48,7 @@ export default function Page() {
     setLoading(true);
     setError("");
     try {
-      const res = await fetch(`${apiBase}/api/quote`, {
+      const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ recipe_name: recipe, quote_date: date })

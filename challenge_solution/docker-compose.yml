@@ -3,17 +3,32 @@ services:
     build:
       context: ..
       dockerfile: challenge_solution/Dockerfile
+    environment:
+      BACKEND_BIND_HOST: ${BACKEND_BIND_HOST}
+      BACKEND_CONTAINER_PORT: ${BACKEND_CONTAINER_PORT}
+      BACKEND_HEALTHCHECK_SCHEME: ${BACKEND_HEALTHCHECK_SCHEME}
+      BACKEND_HEALTHCHECK_HOST: ${BACKEND_HEALTHCHECK_HOST}
+      BACKEND_HEALTHCHECK_PATH: ${BACKEND_HEALTHCHECK_PATH}
     ports:
-      - "8002:8000"
-    command: ["uvicorn", "web_fastapi:app", "--host", "0.0.0.0", "--port", "8000"]
+      - "${BACKEND_HOST_PORT}:${BACKEND_CONTAINER_PORT}"
+    command: ["sh", "-c", "uvicorn web_fastapi:app --host ${BACKEND_BIND_HOST} --port ${BACKEND_CONTAINER_PORT}"]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import os, urllib.request; urllib.request.urlopen(f\"{os.environ['BACKEND_HEALTHCHECK_SCHEME']}://{os.environ['BACKEND_HEALTHCHECK_HOST']}:{os.environ['BACKEND_CONTAINER_PORT']}{os.environ['BACKEND_HEALTHCHECK_PATH']}\")"]
+      interval: ${BACKEND_HEALTHCHECK_INTERVAL}
+      timeout: ${BACKEND_HEALTHCHECK_TIMEOUT}
+      retries: ${BACKEND_HEALTHCHECK_RETRIES}
+      start_period: ${BACKEND_HEALTHCHECK_START_PERIOD}
 
   frontend:
     build:
       context: ..
       dockerfile: challenge_solution/frontend/Dockerfile
-    ports:
-      - "3011:3000"
     environment:
-      NEXT_PUBLIC_API_BASE_URL: "http://localhost:8002"
+      BACKEND_API_BASE_URL: ${BACKEND_API_BASE_URL}
+      FRONTEND_CONTAINER_PORT: ${FRONTEND_CONTAINER_PORT}
+    ports:
+      - "${FRONTEND_HOST_PORT}:${FRONTEND_CONTAINER_PORT}"
+    command: ["sh", "-c", "npm run start -- -p ${FRONTEND_CONTAINER_PORT}"]
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy

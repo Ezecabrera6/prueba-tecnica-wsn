@@ -124,6 +124,7 @@ Endpoint de prueba:
 ```bash
 cd challenge_solution/frontend
 npm install
+set BACKEND_API_BASE_URL=<backend_base_url>
 npm run dev
 ```
 
@@ -137,14 +138,31 @@ La UI hace solo lo necesario para la consigna:
 - cotizar,
 - mostrar ingredientes, cantidades y total en ARS/USD.
 
+El frontend consume siempre rutas relativas (`/api/...`) y actua como proxy server-side. Para cambiar de entorno, solo hay que configurar `BACKEND_API_BASE_URL`.
+
 ### Docker
 
 ```bash
-docker compose -f challenge_solution/docker-compose.yml up --build
+docker compose --env-file challenge_solution/.env -f challenge_solution/docker-compose.yml up --build
 ```
 
-- Frontend: `http://localhost:3011`
-- Backend API: `http://localhost:8002`
+Variables de entorno usadas por Docker:
+
+- `BACKEND_BIND_HOST`
+- `BACKEND_CONTAINER_PORT`
+- `BACKEND_HOST_PORT`
+- `BACKEND_HEALTHCHECK_SCHEME`
+- `BACKEND_HEALTHCHECK_HOST`
+- `BACKEND_HEALTHCHECK_PATH`
+- `BACKEND_HEALTHCHECK_INTERVAL`
+- `BACKEND_HEALTHCHECK_TIMEOUT`
+- `BACKEND_HEALTHCHECK_RETRIES`
+- `BACKEND_HEALTHCHECK_START_PERIOD`
+- `FRONTEND_CONTAINER_PORT`
+- `FRONTEND_HOST_PORT`
+- `BACKEND_API_BASE_URL`
+
+Nota: este repositorio incluye `challenge_solution/.env` versionado **solo por excepcion** al tratarse de una prueba tecnica. En un entorno real, ese archivo no deberia comitearse.
 
 ## 9) Manejo de errores
 
